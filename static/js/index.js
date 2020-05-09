@@ -1,25 +1,11 @@
-document.addEventListener('DOMContentLoaded',()=> {                  
-   // const template = Handlebars.compile(document.querySelector('#channelList').innerHTML);
-
-   var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
-   
-
-   // loading existing channels when page is loaded
-   channelArry = JSON.parse(localStorage.getItem('channelNames')); 
-   if (channelArry === null) {
-       channelArry = [];
-   }
+document.addEventListener('DOMContentLoaded',()=> {      
     
-    for (values = 0; values < channelArry.length; values++) {
-        value = channelArry[values];
-        var li = document.createElement('li');
-        // li.addClass('channelLi');
-        li.innerHTML = `${value}`;
-        $('#listChannels').append(li);
-    
-    }
-    // check if session does exists
+
+    // initialize socketio connection
+    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+    // check if session does exist
+    // DONE
     if (localStorage.getItem('username')) {                                      
         $('#nameField').text(localStorage.getItem('username'));                     
         $('#myModal').modal('hide');               
@@ -28,6 +14,7 @@ document.addEventListener('DOMContentLoaded',()=> {                  
     }
     
     // quick feedback
+    // DONE
     $('#usernameInput').blur(function (e) {                     
 
         var username = $('#usernameInput').val();
@@ -42,7 +29,8 @@ document.addEventListener('DOMContentLoaded',()=> {                  
         }
     });
 
-    // when the button is clicked...
+    // event: create username
+    // DONE
     $('#approval').click(function (e) { 
 
         if (!localStorage.getItem('username')) {
@@ -60,71 +48,43 @@ document.addEventListener('DOMContentLoaded',()=> {                  
         }
     });
 
-    
-
-    socket.on('connect', () => {
-        $('#channelCreateBtn').click(()=> {
-            channelArry = JSON.parse(localStorage.getItem('channelNames')); 
-            if (channelArry === null) {
-                channelArry = [];
-            }
-            var channel = $('#channelInput').val()
-
-            if (channelArry.includes(channel)) {
-                alert(`${channel} exists!`);
-                return ;
-            }
-
-
-            channelArry.push(channel);
-            //localStorage.setItem('channelNames', JSON.stringify(channelArry));
-            $('#channelModal').modal('hide');
-            $('#channelInput').val("");
-            socket.emit('channel created', {'channel':channel})
-        })
+    // event: create a new channel
+    // DONE
+    $('#channelCreateBtn').click(()=> {
+        var channel = $('#channelInput').val()
+        socket.emit('channel created', {'channel':channel})
     })
-        
-    socket.on('show channel', data => {
-        var li = document.createElement('li');
-        li.innerHTML = `${data.channelName}`;
-        channelArry = JSON.parse(localStorage.getItem('channelNames')); 
-        if (channelArry === null) {
-            channelArry = [];
+
+    socket.on('channel exists error', data=>{
+        alert(`${data.channel} already exists! Try another one:`);
+    });
+
+    // channel created successfully, modal will close
+    // DONE
+    socket.on('channel created', data=>{
+        $('#channelModal').modal('hide');
+        $('#channelInput').val("");
+    });
+
+    // connect to web socket server and get the channel list
+    // DONE
+    socket.on('connect', () => {
+        socket.emit('get channels')
+    })
+
+    // populate the channel list 
+    // DONE
+    socket.on('channel list', data=> {
+        channelArray = data.channels;
+        $('#listChannels').text("");
+        var item;
+        for (item of channelArray) {
+            var content = document.createElement('li');
+            content.innerHTML = item;
+            $('#listChannels').append(content);
         }
-
-        channelArry.push(data.channelName)
-        localStorage.setItem('channelNames', JSON.stringify(channelArry));
-        $('#listChannels').append(li);
+    })
     
-
-            // // add channels to unordered list
-            // var values, value;
-            // document.querySelector('#listChannels').innerHTML = "";
-            // for (values = 0; values < JSON.parse(localStorage.getItem('channelNames')).length; values++) {
-            //     value = channelArry[values];
-            //     var li = document.createElement('li');
-            //     // li.addClass('channelLi');
-            //     li.innerHTML = `${value}`;
-            //     $('#listChannels').append(li);
-            //     console.log(li.innerHTML);
-            //     socket.emit('channel created', {'channel':li.innerHTML})
-                
-            // }
-        });
-    
-
-
 });
 
-
-/** PROBLEMS
- *  CHANNELS DO NOT APPEAR ON EVERYONE'S SCREEN, ONLY THE USER THAT THEY BELONG TO
- *  CHANNELS ARE NOT ASYNCRHONOUS, IF YOU ADD A CHANNEL, THEN OTHER USER SHOULD UPDATE HIS SCREEN.
- */
-
- /** TO DO'S
-  * SHOW CHANNEL TO EVERYONE'S SCREEN
-  * WHEN CLICKED ON A CHANNEL, USERS SHOULD GO TO THAT CHANNEL
-  * CHANNEL CREATION---> SOCKET IO, PYTHON
-  */
 
