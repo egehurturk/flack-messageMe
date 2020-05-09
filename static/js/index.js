@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded',()=> {                  
 
 
             channelArry.push(channel);
-            localStorage.setItem('channelNames', JSON.stringify(channelArry));
+            //localStorage.setItem('channelNames', JSON.stringify(channelArry));
             $('#channelModal').modal('hide');
             $('#channelInput').val("");
             socket.emit('channel created', {'channel':channel})
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded',()=> {                  
         channelArry = JSON.parse(localStorage.getItem('channelNames')); 
  
         channelArry.push(data.channelName)
-        // localStorage.setItem('channelNames', JSON.stringify(channelArry));
+        localStorage.setItem('channelNames', JSON.stringify(channelArry));
         $('#listChannels').append(li);
     
 
