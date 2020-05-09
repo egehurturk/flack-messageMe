@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}MessageMe{% endblock %}
+
+{% block content %}
+<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Enter your username to continue</h5>
+        </div>
+        <div class="modal-body">
+            <input type="text" name="username" id="usernameInput" placeholder="Username" class="form-control">
+            <p id="errorName" class="mt-3"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-block" id="approval">continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1 first-col">
+            <div class="dropdown">
+                <input type="image" data-toggle="dropdown" src="{{ url_for('static', filename='img/userAnonymous.png') }}" class="mt-3 center" alt="user" id="userImg">
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <p class="dropdown-item" id="nameField"></p>
+                  <a class="dropdown-item">Change your profile picture</a>
+                </div>
+              </div>
+            
+            <div class="wrapper">
+                <a href="{{ url_for('more') }}">
+                    <button class="btn custombtn">
+                        <i class="fas fa-ellipsis-h text-white fa-lg"></i>
+                    </button>
+                </a>
+            </div>
+        </div>  
+        <div class="col-lg-2 second-col">
+            <div class="row" id="channelRow">
+                <p class="channelHeading">Channels</p><button id="plusBtn" data-toggle="modal" data-target="#channelModal"><i class="fas fa-plus fa-1x text-white mt-2 ml-3"></i></button>
+            </div> 
+            <ul class="mt-5 text-white" id="listChannels">
+
+            </ul>
+        </div>
+        <div class="col-lg-9 third-col">
+            <div class="row" style="border: 2px solid #777777; border-left: none; border-right: none; border-top: none; height: 8.2%;">
+                
+            </div>
+            <div class="row" style="height: 77%; background-color: #4d4b4b;">
+                
+            </div>
+            <div class="row align-self-end customize" style="height: 14.8%; border-top: 1px solid #999999">
+                <div class="col-lg-11" id="sectionCol">
+                    <div contenteditable="true" class="edit" id="newMessage" placeholder="Type Something..."></div>
+                </div>
+                <div class="col-lg-1">
+                    <button class="darkBg"><i class="far fa-paper-plane colorize fa-2x"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CHANNEL ADD MODAL -->
+
+<div class="modal fade" id="channelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title channelModal" id="exampleModalLabel">Create a channel:</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="">
+              <input type="text" class="form-control" placeholder="Enter the name:" id="channelInput">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn savebtn btn-block channelModal" id="channelCreateBtn">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
