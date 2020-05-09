@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded',()=> {                  
    // const template = Handlebars.compile(document.querySelector('#channelList').innerHTML);
 
+   var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+   
+
    // loading existing channels when page is loaded
    channelArry = JSON.parse(localStorage.getItem('channelNames')); 
    if (channelArry === null) {
@@ -57,36 +61,54 @@ document.addEventListener('DOMContentLoaded',()=> {                  
     });
 
     
+
+    socket.on('connect', () => {
+        $('#channelCreateBtn').click(()=> {
+            channelArry = JSON.parse(localStorage.getItem('channelNames')); 
+            if (channelArry === null) {
+                channelArry = [];
+            }
+            var channel = $('#channelInput').val()
+
+            if (channelArry.includes(channel)) {
+                alert(`${channel} exists!`);
+                return ;
+            }
+
+
+            channelArry.push(channel);
+            localStorage.setItem('channelNames', JSON.stringify(channelArry));
+            $('#channelModal').modal('hide');
+            $('#channelInput').val("");
+            socket.emit('channel created', {'channel':channel})
+        })
+    })
+        
+    socket.on('show channel', data => {
+        var li = document.createElement('li');
+        li.innerHTML = `${data.channelName}`;
+        channelArry = JSON.parse(localStorage.getItem('channelNames')); 
+ 
+        channelArry.push(data.channelName)
+        // localStorage.setItem('channelNames', JSON.stringify(channelArry));
+        $('#listChannels').append(li);
     
 
-    $('#channelCreateBtn').click(()=> {
-        channelArry = JSON.parse(localStorage.getItem('channelNames')); 
-        if (channelArry === null) {
-            channelArry = [];
-        }
-
-        if (channelArry.includes($('#channelInput').val())) {
-            alert(`${$('#channelInput').val()} exists!`);
-            return ;
-        }
-
-
-        channelArry.push($('#channelInput').val());
-        localStorage.setItem('channelNames', JSON.stringify(channelArry));
-        $('#channelModal').modal('hide');
-        $('#channelInput').val("");
-
-        var values, value;
-        document.querySelector('#listChannels').innerHTML = "";
-        for (values = 0; values < JSON.parse(localStorage.getItem('channelNames')).length; values++) {
-            value = channelArry[values];
-            var li = document.createElement('li');
-            // li.addClass('channelLi');
-            li.innerHTML = `${value}`;
-            $('#listChannels').append(li);
-           
-        }
-    });
+            // // add channels to unordered list
+            // var values, value;
+            // document.querySelector('#listChannels').innerHTML = "";
+            // for (values = 0; values < JSON.parse(localStorage.getItem('channelNames')).length; values++) {
+            //     value = channelArry[values];
+            //     var li = document.createElement('li');
+            //     // li.addClass('channelLi');
+            //     li.innerHTML = `${value}`;
+            //     $('#listChannels').append(li);
+            //     console.log(li.innerHTML);
+            //     socket.emit('channel created', {'channel':li.innerHTML})
+                
+            // }
+        });
+    
 
 
 });
@@ -102,3 +124,4 @@ document.addEventListener('DOMContentLoaded',()=> {                  
   * WHEN CLICKED ON A CHANNEL, USERS SHOULD GO TO THAT CHANNEL
   * CHANNEL CREATION---> SOCKET IO, PYTHON
   */
+
