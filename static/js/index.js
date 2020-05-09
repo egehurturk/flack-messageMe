@@ -88,7 +88,10 @@ document.addEventListener('DOMContentLoaded',()=> {                  
         var li = document.createElement('li');
         li.innerHTML = `${data.channelName}`;
         channelArry = JSON.parse(localStorage.getItem('channelNames')); 
- 
+        if (channelArry === null) {
+            channelArry = [];
+        }
+
         channelArry.push(data.channelName)
         localStorage.setItem('channelNames', JSON.stringify(channelArry));
         $('#listChannels').append(li);
