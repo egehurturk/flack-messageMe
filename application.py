@@ -14,6 +14,15 @@ socketio = SocketIO(app)
 def index():
     return render_template("index.html")
 
+
+
+@socketio.on("channel created")
+def channel(data):
+    channel = data["channel"]
+    emit("show channel", {"channelName":channel}, broadcast=True)
+
+
+
 @app.route("/more")
 def more():
     return render_template("more.html")
