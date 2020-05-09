@@ -1,0 +1,180 @@
+html, body {
+    min-height: 100%;
+    height: 100%;
+}
+body {
+    background-color: #333333;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+}
+
+.first-col{
+                 
+    height: 788px;                   /*  CHANGE THE HEIGHT TO 100% TO MAKE RESPONSIVE */
+    overflow: visible;
+    background-color: #292828;
+    border: 2px solid #777777;
+
+    
+}
+
+.second-col{
+
+    height: 788px;
+    overflow: visible;
+    background-color: #292828;
+    border: 2px solid #555555;
+}
+
+.third-col {
+
+    height: 788px;
+    overflow: visible;
+    background-color: #333333;
+    border: 2px solid #777777;
+}
+
+.channelHeading {
+    color: #c6bebe;
+    font-size: 30px;
+    letter-spacing: 0px;
+    line-height: 1.2;
+    text-align: left;
+    margin-left: 15px;
+    padding-top: 10px;
+    font-family: 'Muli', sans-serif;
+   
+}
+
+.custombtn {
+    border-radius: 60%;
+    width: 61px;
+    height: 61px;
+    border: 2px solid #777777;
+    margin-top: 620px;
+    outline: 0 none !important;
+
+}
+
+.wrapper {
+    text-align: center;
+}
+
+
+#channelRow {
+    border: 2px solid #555555;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+
+.edit {
+    width: 100%;
+    padding: 10px;
+    min-height: 40px;
+    margin-bottom: 5%;
+    margin-top: 10px;
+    background: #333333;
+    border: 2px solid #999999;
+    border-radius: 20px;
+    box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.25);
+    color: white;
+    outline: 0 none;
+}
+
+div.edit:focus {
+    box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.60);
+}
+
+.colorize {
+    color: #999999;
+    margin-top: 20px;
+}
+
+.darkBg {
+    background-color: #333333;
+    border: none;
+    outline: 0 none !important;
+    box-shadow: none;
+}
+
+[contenteditable=true]:empty:before {
+    content: attr(placeholder);
+    color: #999999;
+    pointer-events: none;
+    display: block; /* For Firefox */
+}
+
+
+p {
+    color: white;
+}
+
+#myModal {
+    background: linear-gradient(to right, #7117ea, #ea6060);
+}
+
+#errorName {
+    color: red;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    width: 60px;
+    height: 60px;
+    border-radius: 20px;
+    outline: 0 none !important;
+}
+
+
+#plusBtn {
+   background-color: #292828;
+   outline: 0 none !important;
+   border: none;
+}
+
+.channelModal {
+    font-family: 'B612', sans-serif;
+}
+
+.savebtn {
+    background-image: linear-gradient(to right, #8ec5fc, #e0c3fc);
+    color: whitesmoke;
+}
+
+/* .channelLi {
+    margin-left: 10px;
+    font-size: 26px;
+} */
+
+#listChannels {
+    margin-left: 30px;
+    font-size: 20px;
+    list-style: none;
+    font-family: 'Muli', sans-serif;
+}
+
+li::before {
+    content: "\f292";
+    font-family: FontAwesome;
+    display: inline-block;
+    margin-left: -1.3em;
+    width: 1.3em; 
+    
+
+}
+
+li {
+    margin-bottom: 10px;
+}
+
