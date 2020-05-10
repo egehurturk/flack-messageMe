@@ -29,7 +29,7 @@ def getChannels():
 def displayMessages(data):
     channelName = data["channel name"]
     messages = channelMessages[channelName]
-    emit('display messages', {"messages":messages}, broadcast=True)
+    emit('display messages', {"messages":messages}, broadcast=False)
 
 @socketio.on("channel created")
 def channel(data):
