@@ -10,6 +10,11 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
 channels = ["general", "random"]
+channelMessages = {
+    "general":["The very first message", "Second message"],
+    "random": ["This is the very first message", "Here's the second one"]
+}
+
 
 @app.route("/", methods=["POST", "GET"])
 def index():
@@ -20,11 +25,19 @@ def getChannels():
     emit('channel list', {"channels":channels}, broadcast=True)
 
 
+@socketio.on('retrieve messages')
+def displayMessages(data):
+    channelName = data["channel name"]
+    messages = channelMessages[channelName]
+    emit('display messages', {"messages":messages}, broadcast=True)
+
 @socketio.on("channel created")
 def channel(data):
     channel = data["channel"]
     if channel in channels:
-        emit('channel exists error', {"channel":channel}, broadcast=True)
+        emit('channel exists error', {"channel":channel}, broadcast=False)
+    elif len(channel) >= 15:
+        emit('channel length error', {'channel':channel}, broadcast=False)
     else:
         channels.append(channel)
         emit('channel created', {}, broadcast=True)
