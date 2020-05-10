@@ -28,8 +28,11 @@ def getChannels():
 @socketio.on('retrieve messages')
 def displayMessages(data):
     channelName = data["channel name"]
-    messages = channelMessages[channelName]
-    emit('display messages', {"messages":messages}, broadcast=False)
+    messages = channelMessages.get(channelName, None)
+    if messages is None:
+        channelMessages[channelName] = [""]
+    else:
+        emit('display messages', {"messages":messages}, broadcast=False)
 
 @socketio.on("channel created")
 def channel(data):
