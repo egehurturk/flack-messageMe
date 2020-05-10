@@ -12,7 +12,7 @@ socketio = SocketIO(app)
 channels = ["general", "random"]
 channelMessages = {
     "general":["The very first message", "Second message"],
-    "random": ["This is the very first message", "Here's the second one"]
+    "random": ["This is the very first message", "Here's the second one", "Don't forget the third one"]
 }
 
 
