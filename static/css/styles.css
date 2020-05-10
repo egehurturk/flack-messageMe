@@ -87,6 +87,7 @@ body {
     box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.25);
     color: white;
     outline: 0 none;
+    /* overflow: scroll; */
 }
 
 div.edit:focus {
@@ -176,5 +177,15 @@ li::before {
 
 li {
     margin-bottom: 10px;
+    color: #6c757d;
+}
+
+/* Default channel --> General  */
+
+.channelBtn {
+    color: #6c757d;
+    background-color: #292828;
+    border: 0;
+    outline: 0 none !important;
 }
 

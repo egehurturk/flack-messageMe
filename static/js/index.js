@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded',()=> {      
     
-
+    // template initialize
+    // const template = Handlebars.compile(document.querySelector('#messageTemplate').innerHTML);
+    
     // initialize socketio connection
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -59,6 +61,13 @@ document.addEventListener('DOMContentLoaded',()=> {
         alert(`${data.channel} already exists! Try another one:`);
     });
 
+
+    // 30 Character limit
+    // 
+    socket.on('channel length error', data=> {
+        alert(`${data.channel} is longer than 15 characters! Try to shorten it.`);
+    });
+
     // channel created successfully, modal will close
     // DONE
     socket.on('channel created', data=>{
@@ -80,11 +89,38 @@ document.addEventListener('DOMContentLoaded',()=> {
         var item;
         for (item of channelArray) {
             var content = document.createElement('li');
-            content.innerHTML = item;
-            $('#listChannels').append(content);
+            content.innerHTML = `<button class="channelBtn" data-channel='${item}'>${item}</button>`;
+            $('#listChannels').append(content);  
         }
     })
+
+    // displaying the channel name on message part
+    $(document).on('click','.channelBtn', (event)=> {
+        var channelName = event.target.dataset.channel
+        socket.emit('retrieve messages', {"channel name":channelName});
+        $('#nameChannel').text(channelName);
+        $('li').css('color', '#6c757d');
+        $('button', 'li').css('color', '#6c757d');
+        $(event.target).css('color', 'white');
+        $(event.target).parent().css('color', 'white');
+    })
     
+    socket.on('display messages', data=>{
+        console.log('hey');
+        messageArray = data.messages
+        $('#messageDisplay').text("");
+        var item;
+        for (item of messageArray) {
+            var content = document.createElement('p');
+            content.innerHTML = item;
+            $('#messageDisplay').append(content);
+        }
+    })
 });
 
 
+
+// when the channel is clicked,
+//     socketio emit('retireve message, that channel name')--->python
+//              python saves channel name & gets current messages from dict, socketio emit('display messages, that messages)
+//                  js-> save messageArray, loops over array, creates element for message
