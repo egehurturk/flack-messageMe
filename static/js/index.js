@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded',()=> {      
     
     // template initialize
-    // const template = Handlebars.compile(document.querySelector('#messageTemplate').innerHTML);
+    //const template = Handlebars.compile(document.querySelector('#messageTemplate').innerHTML);
     
     // initialize socketio connection
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -111,8 +111,9 @@ document.addEventListener('DOMContentLoaded',()=> {
         $('#messageDisplay').text("");
         var item;
         for (item of messageArray) {
-            var content = document.createElement('p');
-            content.innerHTML = item;
+            var content = document.createElement('div');
+            $(content).addClass('msgBox')
+            content.innerHTML = `<p class="msgText" data-msg=${item}>${item}</p>`
             $('#messageDisplay').append(content);
         }
     })
