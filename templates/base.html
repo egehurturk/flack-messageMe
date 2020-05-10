@@ -5,25 +5,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS, HANDLEBARS, SOCKETIO, OTHER KITS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=B612&family=Muli&family=Varela&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/fb6ab35cfd.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
-    <script id="channelList" type="text/x-handlebars-template">
-      {% raw %}
-      {{#each value}}
-      <li>
-        # {{ this }}
-      </li>
-      {{/each}}
-      {% endraw %}
-    </script> -->
+    <!-- <script id="messageTemplate" type="text/x-handlebars-template">
+      <div class="msgBox">
+        <p>{{ value }}</p>
+      </div>
 
+    </script> -->
 
     <title>{% block title %}{% endblock %}</title>
   </head>
