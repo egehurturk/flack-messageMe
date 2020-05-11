@@ -1,7 +1,9 @@
-document.addEventListener('DOMContentLoaded',()=> {      
+document.addEventListener('DOMContentLoaded',()=> {    
     
-    // template initialize
-    //const template = Handlebars.compile(document.querySelector('#messageTemplate').innerHTML);
+    // When pressed on "Enter" key, stop from from being submitted!
+    $(document).on("keydown", "form", function (event) {
+        return event.key != "Enter";
+    })
     
     // initialize socketio connection
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -31,6 +33,7 @@ document.addEventListener('DOMContentLoaded',()=> {
         }
     });
 
+
     // event: create username
     // DONE
     $('#approval').click(function (e) { 
@@ -45,21 +48,47 @@ document.addEventListener('DOMContentLoaded',()=> {
         } else {
 
             $('#nameField').text(localStorage.getItem('username'));
+            var name = localStorage.getItem('username');
             $('#myModal').modal('hide');
             e.preventDefault()
         }
     });
 
+
     // event: create a new channel
     // DONE
     $('#channelCreateBtn').click(()=> {
         var channel = $('#channelInput').val()
-        socket.emit('channel created', {'channel':channel})
+        if (channel.trim().length === 0) {
+            alert("Channel name shouldn't be empty");
+            return ;
+        } else {
+            socket.emit('channel created', {'channel':channel})
+        }
+        
     })
+
+    // Allow to create a channel by pressing "Enter" Key!
+    var channelNameInput = document.getElementById('channelInput');
+    channelNameInput.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.which === 13) {
+            // get the value of input field
+            var channelName = $('#channelInput').val();
+            // Trigger the button element with a click
+            socket.emit('channel created', {'channel':channelName});
+            $('#channelModal').modal('hide');
+            e.preventDefault();
+        }
+    })
+
+    
 
     socket.on('channel exists error', data=>{
         alert(`${data.channel} already exists! Try another one:`);
     });
+
+    
 
 
     // 30 Character limit
@@ -95,6 +124,7 @@ document.addEventListener('DOMContentLoaded',()=> {
     })
 
     // displaying the channel name on message part
+    // BUG HERE
     $(document).on('click','.channelBtn', (event)=> {
         var channelName = event.target.dataset.channel
         $('#nameChannel').text(channelName);
@@ -104,9 +134,11 @@ document.addEventListener('DOMContentLoaded',()=> {
         $(event.target).parent().css('color', 'white');
         socket.emit('retrieve messages', {"channel name":channelName});
     })
+
+   
     
+    // displaying messages of a particular channel
     socket.on('display messages', data=>{
-        console.log('hey');
         messageArray = data.messages
         $('#messageDisplay').text("");
         var item;
@@ -123,6 +155,10 @@ document.addEventListener('DOMContentLoaded',()=> {
         }
     })
 });
+
+
+
+
 
 
 
