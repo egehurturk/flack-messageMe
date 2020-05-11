@@ -97,12 +97,12 @@ document.addEventListener('DOMContentLoaded',()=> {
     // displaying the channel name on message part
     $(document).on('click','.channelBtn', (event)=> {
         var channelName = event.target.dataset.channel
-        socket.emit('retrieve messages', {"channel name":channelName});
         $('#nameChannel').text(channelName);
         $('li').css('color', '#6c757d');
         $('button', 'li').css('color', '#6c757d');
         $(event.target).css('color', 'white');
         $(event.target).parent().css('color', 'white');
+        socket.emit('retrieve messages', {"channel name":channelName});
     })
     
     socket.on('display messages', data=>{
@@ -111,10 +111,15 @@ document.addEventListener('DOMContentLoaded',()=> {
         $('#messageDisplay').text("");
         var item;
         for (item of messageArray) {
-            var content = document.createElement('div');
-            $(content).addClass('msgBox')
-            content.innerHTML = `<p class="msgText" data-msg=${item}>${item}</p>`
-            $('#messageDisplay').append(content);
+            if (item==="") {
+                return ;
+            } else {
+                var content = document.createElement('div');
+                $(content).addClass('msgBox')
+                content.innerHTML = `<p class="msgText" data-msg=${item}>${item}</p>`
+                $('#messageDisplay').append(content);
+            }
+
         }
     })
 });
