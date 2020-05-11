@@ -20,6 +20,23 @@ channelMessages = {
 def index():
     return render_template("index.html")
 
+
+
+
+@socketio.on("channel created")
+def channel(data):
+    channel = data["channel"]
+    if channel in channels:
+        emit('channel exists error', {"channel":channel}, broadcast=False)
+    elif len(channel) >= 15:
+        emit('channel length error', {'channel':channel}, broadcast=False)
+    else:
+        channels.append(channel)
+        emit('channel created', {}, broadcast=True)
+        emit('channel list', {"channels":channels}, broadcast=True)
+
+
+
 @socketio.on('get channels')
 def getChannels():
     emit('channel list', {"channels":channels}, broadcast=True)
@@ -33,18 +50,6 @@ def displayMessages(data):
         channelMessages[channelName] = [""]
     else:
         emit('display messages', {"messages":messages}, broadcast=False)
-
-@socketio.on("channel created")
-def channel(data):
-    channel = data["channel"]
-    if channel in channels:
-        emit('channel exists error', {"channel":channel}, broadcast=False)
-    elif len(channel) >= 15:
-        emit('channel length error', {'channel':channel}, broadcast=False)
-    else:
-        channels.append(channel)
-        emit('channel created', {}, broadcast=True)
-        emit('channel list', {"channels":channels}, broadcast=True)
 
 
 
