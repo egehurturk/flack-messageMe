@@ -41,7 +41,7 @@
         </div>  
         <div class="col-lg-2 second-col">
             <div class="row" id="channelRow">
-                <p class="channelHeading">Channels</p><button id="plusBtn" data-toggle="modal" data-target="#channelModal"><i class="fas fa-plus fa-1x text-white mt-1 ml-5"></i></button>
+                <p class="channelHeading">Channels</p><button id="plusBtn" data-toggle="modal" data-target="#channelModal"><i class="fas fa-plus fa-1x text-white mt-2 ml-5"></i></button>
             </div> 
             <ul class="mt-5" id="listChannels">
 
@@ -57,11 +57,13 @@
                 </div>
             </div>
             <div class="row align-self-end customize" style="height: 14.8%; border-top: 1px solid #999999">
-                <div class="col-lg-11" id="sectionCol">
-                    <div contenteditable="true" class="edit" id="newMessage" placeholder="Type Something..."></div>
-                </div>
-                <div class="col-lg-1">
-                    <button class="darkBg mt-2"><i class="fas fa-paper-plane colorize fa-2x"></i></button>
+                <div class="col-lg-12" id="sectionCol">
+                    <div class="input-group mb-3 mt-3 ml-5" style="width: 95%;">
+                      <input type="text" class="form-control edit" placeholder="Type Something..." style="border-right: none;">
+                      <div class="input-group-append" style="background: none;">
+                        <button class=" input-group-text" type="button" id="#sendBtn" style="background: none;outline-color: transparent;outline-style: none;height: 55%;border: none"><i class="fas fa-paper-plane text-white mt-1"></i></button>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
