@@ -188,7 +188,8 @@ li {
 }
 
 .msgBox {
-    height: 10%;
+    height: auto;
+    min-height: 60px;
     width: 280px;
     background-color: #009afd;
     border-radius: 6px 20px 20px 6px;
@@ -199,11 +200,26 @@ li {
 
 }
 
+.msgBox::before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 10px solid transparent;
+    border-right: 10px solid #009afd;
+    border-top: 10px solid #009afd;
+    border-bottom: 10px solid transparent;
+    border-radius: 5px 0px 0px 0px;
+    left: 20px;
+    top: 20px;
+}
+
 
 .msgText {
     padding-top: 8%;
     padding-left: 7%;
     color: #feffff;
+    padding-bottom: 5%;
 }
 
 #nameChannel {
@@ -231,4 +247,10 @@ li {
 *::selection {
     background-color: lightblue;
     color: white;
+}
+
+#messageDisplay {
+    background-image: linear-gradient(to right,#353637, #353636;
+    overflow-x: hidden;
+    overflow-y: auto; 
 }
