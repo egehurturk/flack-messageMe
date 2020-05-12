@@ -11,8 +11,8 @@ socketio = SocketIO(app)
 
 channels = ["general", "random"]
 channelMessages = {
-    "general":["This is the very beginning, Who knows, maybe one day I'll go popular", "Here comes the second", "Here's the third", "Watch me, I will expand cuz I want it that way, I will expand both vertically and horizontally"],
-    "random": ["Let start #random", "Follow up: second", "Why not third"]
+    "general":[{"from":"bot1", "msg":"This is the very beginning"}, {"from":"bot1", "msg":"Who knows, maybe one day I'll go popular"}, {"from":"bot2", "msg":"Here comes the second"}, {"from":"bot3", "msg":"Here's the third"}, {"from":"bot4", "msg":"Watch me, I will expand cuz I want it that way, I will expand both vertically and horizontally"}],
+    "random": [{"from":"bot5", "msg":"Let start #random"}, {"from":"bot6", "msg":"Follow up: second"}, {"from":"bot7", "msg":"Why not third"}],
 }
 
 
@@ -47,12 +47,20 @@ def displayMessages(data):
     channelName = data["channel name"]
     messages = channelMessages.get(channelName, None)
     if messages is None:
-        channelMessages[channelName] = [""]
+        channelMessages[channelName] = list()
         emit('display messages', {"messages": channelMessages[channelName]}, broadcast=False)
     else:
         emit('display messages', {"messages":messages}, broadcast=False)
 
 
+@socketio.on('send a message')
+def sendMessage(data):
+    message = data["message"]
+    channel = data["channel"]
+    username = data["username"]
+    getMessages = channelMessages[channel]
+    getMessages.append({"from":username, "msg":message})
+    emit('recieve message', {"messages":getMessages[-1], "channelName":channel, "username":getMessages[-1]["from"]}, broadcast=True)
 
 @app.route("/more")
 def more():
