@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded',()=> {
     })
 
     // Allow to create a channel by pressing "Enter" Key!
+    // DONE
     var channelNameInput = document.getElementById('channelInput');
     channelNameInput.addEventListener("keyup", function(event) {
         // Number 13 is the "Enter" key on the keyboard
@@ -78,12 +79,13 @@ document.addEventListener('DOMContentLoaded',()=> {
             // Trigger the button element with a click
             socket.emit('channel created', {'channel':channelName});
             $('#channelModal').modal('hide');
-            e.preventDefault();
+            event.preventDefault();
         }
     })
 
     
-
+    // Channel Name Conflict
+    // DONE
     socket.on('channel exists error', data=>{
         alert(`${data.channel} already exists! Try another one:`);
     });
@@ -92,7 +94,7 @@ document.addEventListener('DOMContentLoaded',()=> {
 
 
     // 30 Character limit
-    // 
+    // DONE
     socket.on('channel length error', data=> {
         alert(`${data.channel} is longer than 15 characters! Try to shorten it.`);
     });
@@ -124,7 +126,7 @@ document.addEventListener('DOMContentLoaded',()=> {
     })
 
     // displaying the channel name on message part
-    // BUG HERE
+    // DONE
     $(document).on('click','.channelBtn', (event)=> {
         var channelName = event.target.dataset.channel
         $('#nameChannel').text(channelName);
@@ -138,6 +140,7 @@ document.addEventListener('DOMContentLoaded',()=> {
    
     
     // displaying messages of a particular channel
+    // DONE
     socket.on('display messages', data=>{
         messageArray = data.messages
         $('#messageDisplay').text("");
@@ -148,21 +151,53 @@ document.addEventListener('DOMContentLoaded',()=> {
             } else {
                 var content = document.createElement('div');
                 $(content).addClass('msgBox')
-                content.innerHTML = `<p class="msgText" data-msg=${item}>${item}</p>`
+                content.innerHTML = `<p class="msgText" data-msg=${item["msg"]}>${item["msg"]}</p>`
                 $('#messageDisplay').append(content);
             }
 
         }
     })
+
+    // sending messages
+    $('#sendBtn').on('click', ()=>{
+        var message = $('#messageInput').val();
+        var channel = $('#nameChannel').text();
+        if (message.trim().length === 0) {
+            return ;
+        } else {
+            socket.emit('send a message', {"message":message, "channel":channel, "username":localStorage.getItem('username')});
+            $('#messageInput').val("");
+        }
+    });
+
+    // display that new message
+    socket.on('recieve message', data=>{
+        var newMessage = data.messages["msg"];
+        var username = data.username;
+        var content = document.createElement('div');
+        $(content).addClass('msgBox');
+        content.innerHTML = `<p class="msgText" data-msg=${newMessage}>${newMessage}, ${username}</p>`
+        $('#messageDisplay').append(content);
+        
+        
+    })
+
+    // send a message with enter key
+    // DONE
+    var msgInput = document.querySelector('#messageInput');
+    msgInput.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.which === 13) {
+            // get the value of input field
+            var msg = $('#messageInput').val();
+            var channel = $('#nameChannel').text();
+            // Trigger the button element with a click
+            socket.emit('send a message', {"message":msg, "channel":channel, "username":localStorage.getItem('username')});
+            $('#messageInput').val("");
+            event.preventDefault();
+        }
+    })
+
 });
 
 
-
-
-
-
-
-// when the channel is clicked,
-//     socketio emit('retireve message, that channel name')--->python
-//              python saves channel name & gets current messages from dict, socketio emit('display messages, that messages)
-//                  js-> save messageArray, loops over array, creates element for message
