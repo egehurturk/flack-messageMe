@@ -11,8 +11,8 @@ socketio = SocketIO(app)
 
 channels = ["general", "random"]
 channelMessages = {
-    "general":["The very first message", "Second message", "Here comes the third!"],
-    "random": ["This is the very first message", "Here's the second one", "Don't forget the third one", "And here is the fourth one!"]
+    "general":["This is the very beginning, Who knows, maybe one day I'll go popular", "Here comes the second", "Here's the third", "Watch me, I will expand cuz I want it that way, I will expand both vertically and horizontally"],
+    "random": ["Let start #random", "Follow up: second", "Why not third"]
 }
 
 
@@ -48,6 +48,7 @@ def displayMessages(data):
     messages = channelMessages.get(channelName, None)
     if messages is None:
         channelMessages[channelName] = [""]
+        emit('display messages', {"messages": channelMessages[channelName]}, broadcast=False)
     else:
         emit('display messages', {"messages":messages}, broadcast=False)
 
