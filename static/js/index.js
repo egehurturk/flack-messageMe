@@ -123,21 +123,29 @@ document.addEventListener('DOMContentLoaded',()=> {
             content.innerHTML = `<button class="channelBtn" data-channel='${item}'>${item}</button>`;
             $('#listChannels').append(content);  
         }
+        socket.emit("populated channel list")
     })
 
     // displaying the channel name on message part
     // DONE
-    $(document).on('click','.channelBtn', (event)=> {
-        var channelName = event.target.dataset.channel
-        $('#nameChannel').text(channelName);
-        $('li').css('color', '#6c757d');
-        $('button', 'li').css('color', '#6c757d');
-        $(event.target).css('color', 'white');
-        $(event.target).parent().css('color', 'white');
-        socket.emit('retrieve messages', {"channel name":channelName});
-    })
-
+    socket.on('process display channel msg', data=>{
+        $(document).on('click','.channelBtn', (event)=> {
+            var channelName = event.target.dataset.channel;
+            var nameUser = data["allData"][channelName];
+            if (nameUser===null) {
+                socket.emit('retrieve messages', {"channel name":channelName});
+            } else {
+                $('#nameChannel').text(channelName);
+                $('li').css('color', '#6c757d');
+                $('button', 'li').css('color', '#6c757d');
+                $(event.target).css('color', 'white');
+                $(event.target).parent().css('color', 'white');
+                socket.emit('retrieve messages', {"channel name":channelName, "username":nameUser});
+            }
+        });
+    });
    
+
     
     // displaying messages of a particular channel
     // DONE
@@ -149,9 +157,13 @@ document.addEventListener('DOMContentLoaded',()=> {
             if (item==="") {
                 return ;
             } else {
+                var userNaming = item["from"];
                 var content = document.createElement('div');
                 $(content).addClass('msgBox')
-                content.innerHTML = `<p class="msgText" data-msg=${item["msg"]}>${item["msg"]}</p>`
+                content.innerHTML = `
+                <p><strong style="margin-top:10px;margin-left:10px;color:black;">${userNaming}</strong><span style="color:#777777;margin-left:5%;">${item["time"]}</span></p>
+                <p class="msgText" data-msg=${item["msg"]}>${item["msg"]}</p>
+                `
                 $('#messageDisplay').append(content);
             }
 
@@ -174,9 +186,13 @@ document.addEventListener('DOMContentLoaded',()=> {
     socket.on('recieve message', data=>{
         var newMessage = data.messages["msg"];
         var username = data.username;
+        var msgTime = data.time
         var content = document.createElement('div');
         $(content).addClass('msgBox');
-        content.innerHTML = `<p class="msgText" data-msg=${newMessage}>${newMessage}, ${username}</p>`
+        content.innerHTML = `
+        <p><strong style="margin-top:10px;margin-left:10px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
+        <p class="msgText" data-msg=${newMessage}>${newMessage}</p>
+        `
         $('#messageDisplay').append(content);
         
         
