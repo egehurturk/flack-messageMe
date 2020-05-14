@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded',()=> {    
+
     
     // When pressed on "Enter" key, stop from from being submitted!
     $(document).on("keydown", "form", function (event) {
@@ -130,6 +131,7 @@ document.addEventListener('DOMContentLoaded',()=> {
     // DONE
     socket.on('process display channel msg', data=>{
         $(document).on('click','.channelBtn', (event)=> {
+            document.querySelector("#messageDisplay").scrollIntoView(false);
             var channelName = event.target.dataset.channel;
             var nameUser = data["allData"][channelName];
             if (nameUser===null) {
@@ -188,12 +190,22 @@ document.addEventListener('DOMContentLoaded',()=> {
         var username = data.username;
         var msgTime = data.time
         var content = document.createElement('div');
-        $(content).addClass('msgBox');
-        content.innerHTML = `
-        <p><strong style="margin-top:10px;margin-left:10px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
-        <p class="msgText" data-msg=${newMessage}>${newMessage}</p>
-        `
-        $('#messageDisplay').append(content);
+        if (username===localStorage.getItem('username')) {
+            $(content).addClass('myMsgBox');
+            content.innerHTML = `
+            <p><strong style="margin-top:10px;margin-left:3%;color:black;">${username}</strong><span style="color:#777777;margin-left:3%;">${msgTime}</span></p>
+            <p class="msgText" data-msg=${newMessage}>${newMessage}</p>
+            `
+            $('#messageDisplay').append(content);
+        } else {
+            $(content).addClass('msgBox');
+            content.innerHTML = `
+            <p><strong style="margin-top:10px;margin-left:10px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
+            <p class="msgText" data-msg=${newMessage}>${newMessage}</p>
+            `
+            $('#messageDisplay').append(content);
+        }; 
+        
         
         
     })
