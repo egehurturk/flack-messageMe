@@ -21,6 +21,7 @@ channelMessages = {
 }
 
 
+
 @app.route("/", methods=["POST", "GET"])
 def index():
     return render_template("index.html")
@@ -57,9 +58,10 @@ def displayMessages(data):
     messages = channelMessages.get(channelName, None)
     if messages is None:
         channelMessages[channelName] = list()
-        emit('display messages', {"messages": channelMessages[channelName]}, broadcast=False)
+        emit('display messages', {"messages": channelMessages[channelName], "channel":channelName}, broadcast=False)
     else:
-        emit('display messages', {"messages":messages}, broadcast=False)
+        messages = messages[-100:]
+        emit('display messages', {"messages":messages, "channel":channelName}, broadcast=False)
 
 
 @socketio.on('send a message')
