@@ -193,15 +193,15 @@ document.addEventListener('DOMContentLoaded',()=> {
         if (username===localStorage.getItem('username')) {
             $(content).addClass('myMsgBox');
             content.innerHTML = `
-            <p><strong style="margin-top:10px;margin-left:3%;color:black;">${username}</strong><span style="color:#777777;margin-left:3%;">${msgTime}</span></p>
-            <p class="msgText" data-msg=${newMessage}>${newMessage}</p>
+            <p><strong style="margin-top:10px;margin-left:5.5%;color:black;">${username}</strong><span style="color:#777777;margin-left:3%;">${msgTime}</span></p>
+            <p class="myMsgText" style="margin-left:4%;" data-msg=${newMessage}>${newMessage}</p>
             `
             $('#messageDisplay').append(content);
         } else {
             $(content).addClass('msgBox');
             content.innerHTML = `
-            <p><strong style="margin-top:10px;margin-left:10px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
-            <p class="msgText" data-msg=${newMessage}>${newMessage}</p>
+            <p><strong style="margin-top:10px;margin-left:20px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
+            <p class="msgText" style="margin-left:20px;" data-msg=${newMessage}>${newMessage}</p>
             `
             $('#messageDisplay').append(content);
         }; 
@@ -229,3 +229,5 @@ document.addEventListener('DOMContentLoaded',()=> {
 });
 
 
+
+// get the all messages, uptade last 100 of them to local storage, use localstorage in displaying messages

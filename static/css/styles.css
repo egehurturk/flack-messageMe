@@ -266,3 +266,10 @@ li {
     margin-bottom: 1.5%;
     margin-left: auto;
 }
+
+.myMsgText {
+    padding-left: 3%;
+    color: #292828;
+    padding-bottom: 5%;
+    padding-right: 1.5%;
+}
