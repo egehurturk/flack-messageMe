@@ -1,5 +1,7 @@
-document.addEventListener('DOMContentLoaded',()=> {    
+document.addEventListener('DOMContentLoaded',()=> { 
 
+   
+    
     
     // When pressed on "Enter" key, stop from from being submitted!
     $(document).on("keydown", "form", function (event) {
@@ -8,6 +10,19 @@ document.addEventListener('DOMContentLoaded',()=> {
     
     // initialize socketio connection
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+     // remembering the channel
+     if (localStorage.getItem('currentChannel')) {
+        document.querySelector("#messageDisplay").scrollIntoView(false);
+        var currentChannel = localStorage.getItem('currentChannel');
+        $('#nameChannel').text(currentChannel);
+        $('li').css('color', '#6c757d');
+        $('button', 'li').css('color', '#6c757d');
+        $(`button[“data-channel=${currentChannel}]`).css('color', 'white');
+        $(`button[“data-channel=${currentChannel}]`).parent().css('color', 'white');
+        socket.emit('retrieve messages', {"channel name":currentChannel});
+        $(`button[data-channel=${currentChannel}]`).trigger('click');
+    }
 
     // check if session does exist
     // DONE
@@ -49,7 +64,6 @@ document.addEventListener('DOMContentLoaded',()=> {
         } else {
 
             $('#nameField').text(localStorage.getItem('username'));
-            var name = localStorage.getItem('username');
             $('#myModal').modal('hide');
             e.preventDefault()
         }
@@ -70,7 +84,7 @@ document.addEventListener('DOMContentLoaded',()=> {
     })
 
     // Allow to create a channel by pressing "Enter" Key!
-    // DONE
+    // BUG HERE----> WHEN SUBMIT FORM WITH ENTER, WHEN NAMES CONFLICT, MODAL WILL HIDE BUT ALERT WILL BE DISPLAYED.
     var channelNameInput = document.getElementById('channelInput');
     channelNameInput.addEventListener("keyup", function(event) {
         // Number 13 is the "Enter" key on the keyboard
@@ -134,16 +148,17 @@ document.addEventListener('DOMContentLoaded',()=> {
             document.querySelector("#messageDisplay").scrollIntoView(false);
             var channelName = event.target.dataset.channel;
             var nameUser = data["allData"][channelName];
+            localStorage.setItem('currentChannel', channelName);
             if (nameUser===null) {
                 socket.emit('retrieve messages', {"channel name":channelName});
-            } else {
-                $('#nameChannel').text(channelName);
-                $('li').css('color', '#6c757d');
-                $('button', 'li').css('color', '#6c757d');
-                $(event.target).css('color', 'white');
-                $(event.target).parent().css('color', 'white');
-                socket.emit('retrieve messages', {"channel name":channelName, "username":nameUser});
-            }
+            } 
+            $('#nameChannel').text(channelName);
+            $('li').css('color', '#6c757d');
+            $('button', 'li').css('color', '#6c757d');
+            $(event.target).css('color', 'white');
+            $(event.target).parent().css('color', 'white');
+            socket.emit('retrieve messages', {"channel name":channelName, "username":nameUser});
+            
         });
     });
    
@@ -153,6 +168,7 @@ document.addEventListener('DOMContentLoaded',()=> {
     // DONE
     socket.on('display messages', data=>{
         messageArray = data.messages
+        channel = data.channel
         $('#messageDisplay').text("");
         var item;
         for (item of messageArray) {
@@ -160,11 +176,13 @@ document.addEventListener('DOMContentLoaded',()=> {
                 return ;
             } else {
                 var userNaming = item["from"];
+                var message = item["msg"];
+                var time = item["time"];
                 var content = document.createElement('div');
                 $(content).addClass('msgBox')
                 content.innerHTML = `
-                <p><strong style="margin-top:10px;margin-left:10px;color:black;">${userNaming}</strong><span style="color:#777777;margin-left:5%;">${item["time"]}</span></p>
-                <p class="msgText" data-msg=${item["msg"]}>${item["msg"]}</p>
+                <p><strong style="margin-top:10px;margin-left:10px;color:black;">${userNaming}</strong><span style="color:#777777;margin-left:5%;">${time}</span></p>
+                <p class="msgText" data-msg=${message}>${message}</p>
                 `
                 $('#messageDisplay').append(content);
             }
