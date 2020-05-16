@@ -200,20 +200,6 @@ li {
 
 }
 
-.msgBox::before {
-    content: "";
-    width: 0px;
-    height: 0px;
-    position: absolute;
-    border-left: 10px solid transparent;
-    border-right: 10px solid #e0dfe5;
-    border-top: 10px solid #e0dfe5;
-    border-bottom: 10px solid transparent;
-    border-radius: 5px 0px 0px 0px;
-    left: 20px;
-    top: 20px;
-}
-
 
 .msgText {
     padding-left: 3%;
