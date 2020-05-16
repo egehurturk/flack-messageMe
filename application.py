@@ -72,7 +72,7 @@ def sendMessage(data):
     msgTime = dt.datetime.now().strftime("%d %b %I:%M %p")
     getMessages = channelMessages[channel]
     getMessages.append({"from":username, "msg":message, "time":msgTime})
-    emit('recieve message', {"messages":getMessages[-1], "channelName":channel, "username":getMessages[-1]["from"], "time":msgTime}, broadcast=True)
+    emit(f'receive message {channel}', {"messages":getMessages[-1], "channelName":channel, "username":getMessages[-1]["from"], "time":msgTime}, broadcast=True)
 
 @app.route("/more")
 def more():
