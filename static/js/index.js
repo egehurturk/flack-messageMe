@@ -15,13 +15,14 @@ document.addEventListener('DOMContentLoaded',()=> {
      if (localStorage.getItem('currentChannel')) {
         document.querySelector("#messageDisplay").scrollIntoView(false);
         var currentChannel = localStorage.getItem('currentChannel');
+        var currentBtn = $(`button[data-channel="${currentChannel}"]`);
         $('#nameChannel').text(currentChannel);
         $('li').css('color', '#6c757d');
         $('button', 'li').css('color', '#6c757d');
-        $(`button[“data-channel=${currentChannel}]`).css('color', 'white');
-        $(`button[“data-channel=${currentChannel}]`).parent().css('color', 'white');
+        currentBtn.css('color', 'white');
+        currentBtn.parent().css('color', 'white');
         socket.emit('retrieve messages', {"channel name":currentChannel});
-        $(`button[data-channel=${currentChannel}]`).trigger('click');
+        $(`button[data-channel="${currentChannel}"]`).trigger('click');
     }
 
     // check if session does exist
@@ -145,6 +146,7 @@ document.addEventListener('DOMContentLoaded',()=> {
     // DONE
     socket.on('process display channel msg', data=>{
         $(document).on('click','.channelBtn', (event)=> {
+            $('#messageInput').val('');
             document.querySelector("#messageDisplay").scrollIntoView(false);
             var channelName = event.target.dataset.channel;
             var nameUser = data["allData"][channelName];
@@ -179,21 +181,32 @@ document.addEventListener('DOMContentLoaded',()=> {
                 var message = item["msg"];
                 var time = item["time"];
                 var content = document.createElement('div');
-                $(content).addClass('msgBox')
-                content.innerHTML = `
-                <p><strong style="margin-top:10px;margin-left:10px;color:black;">${userNaming}</strong><span style="color:#777777;margin-left:5%;">${time}</span></p>
-                <p class="msgText" data-msg=${message}>${message}</p>
-                `
-                $('#messageDisplay').append(content);
+                if (userNaming===localStorage.getItem('username')) {
+                    $(content).addClass('myMsgBox');
+                    content.innerHTML = `
+                    <p><strong style="margin-top:10px;margin-left:5.5%;color:black;">${userNaming}</strong><span style="color:#fff;margin-left:3%;">${time}</span></p>
+                    <p class="myMsgText" style="margin-left:4%;" data-msg=${message}>${message}</p>
+                    `
+                    $('#messageDisplay').append(content);
+                } else {
+                    $(content).addClass('msgBox')
+                    content.innerHTML = `
+                    <p><strong style="margin-top:10px;margin-left:10px;color:black;">${userNaming}</strong><span style="color:#777777;margin-left:5%;">${time}</span></p>
+                    <p class="msgText" data-msg=${message}>${message}</p>
+                    `
+                    $('#messageDisplay').append(content);
+                }
+                
             }
 
         }
     })
 
     // sending messages
+    // DONE
     $('#sendBtn').on('click', ()=>{
         var message = $('#messageInput').val();
-        var channel = $('#nameChannel').text();
+        var channel = $('#nameChannel').text();        //   FIX HERE
         if (message.trim().length === 0) {
             return ;
         } else {
@@ -211,9 +224,10 @@ document.addEventListener('DOMContentLoaded',()=> {
         if (username===localStorage.getItem('username')) {
             $(content).addClass('myMsgBox');
             content.innerHTML = `
-            <p><strong style="margin-top:10px;margin-left:5.5%;color:black;">${username}</strong><span style="color:#777777;margin-left:3%;">${msgTime}</span></p>
+            <p><strong style="margin-top:10px;margin-left:5.5%;color:black;">${username}</strong><span style="color:#fff;margin-left:3%;">${msgTime}</span></p>
             <p class="myMsgText" style="margin-left:4%;" data-msg=${newMessage}>${newMessage}</p>
             `
+            // BUG HERE: WHEN SOMEBODY SENDS A MESSAGE, THAT MESSAGE WILL APPEAR ON EVERY CHANNEL FIRST.
             $('#messageDisplay').append(content);
         } else {
             $(content).addClass('msgBox');
@@ -221,6 +235,7 @@ document.addEventListener('DOMContentLoaded',()=> {
             <p><strong style="margin-top:10px;margin-left:20px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
             <p class="msgText" style="margin-left:20px;" data-msg=${newMessage}>${newMessage}</p>
             `
+            // BUG HERE: WHEN SOMEBODY SENDS A MESSAGE, THAT MESSAGE WILL APPEAR ON EVERY CHANNEL FIRST. 
             $('#messageDisplay').append(content);
         }; 
         
@@ -237,12 +252,16 @@ document.addEventListener('DOMContentLoaded',()=> {
             // get the value of input field
             var msg = $('#messageInput').val();
             var channel = $('#nameChannel').text();
-            // Trigger the button element with a click
-            socket.emit('send a message', {"message":msg, "channel":channel, "username":localStorage.getItem('username')});
-            $('#messageInput').val("");
-            event.preventDefault();
-        }
-    })
+            if (msg.trim().length === 0) {
+                return ;
+            } else {
+                // Trigger the button element with a click
+                socket.emit('send a message', {"message":msg, "channel":channel, "username":localStorage.getItem('username')});
+                $('#messageInput').val("");
+                event.preventDefault();
+            };
+        };
+    });
 
 });
 
