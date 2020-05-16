@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded',()=> { 
 
    
-    
+    currentChannelListener = '';
     
     // When pressed on "Enter" key, stop from from being submitted!
     $(document).on("keydown", "form", function (event) {
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded',()=> {
      if (localStorage.getItem('currentChannel')) {
         document.querySelector("#messageDisplay").scrollIntoView(false);
         var currentChannel = localStorage.getItem('currentChannel');
+        // listenForMessages(currentChannel);
         var currentBtn = $(`button[data-channel="${currentChannel}"]`);
         $('#nameChannel').text(currentChannel);
         $('li').css('color', '#6c757d');
@@ -169,8 +170,9 @@ document.addEventListener('DOMContentLoaded',()=> {
     // displaying messages of a particular channel
     // DONE
     socket.on('display messages', data=>{
-        messageArray = data.messages
-        channel = data.channel
+        messageArray = data.messages;
+        channel = data.channel;
+        listenForMessages(channel);
         $('#messageDisplay').text("");
         var item;
         for (item of messageArray) {
@@ -214,34 +216,39 @@ document.addEventListener('DOMContentLoaded',()=> {
             $('#messageInput').val("");
         }
     });
-
+    listenForMessages('');
     // display that new message
-    socket.on('recieve message', data=>{
-        var newMessage = data.messages["msg"];
-        var username = data.username;
-        var msgTime = data.time
-        var content = document.createElement('div');
-        if (username===localStorage.getItem('username')) {
-            $(content).addClass('myMsgBox');
-            content.innerHTML = `
-            <p><strong style="margin-top:10px;margin-left:5.5%;color:black;">${username}</strong><span style="color:#fff;margin-left:3%;">${msgTime}</span></p>
-            <p class="myMsgText" style="margin-left:4%;" data-msg=${newMessage}>${newMessage}</p>
-            `
-            // BUG HERE: WHEN SOMEBODY SENDS A MESSAGE, THAT MESSAGE WILL APPEAR ON EVERY CHANNEL FIRST.
-            $('#messageDisplay').append(content);
-        } else {
-            $(content).addClass('msgBox');
-            content.innerHTML = `
-            <p><strong style="margin-top:10px;margin-left:20px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
-            <p class="msgText" style="margin-left:20px;" data-msg=${newMessage}>${newMessage}</p>
-            `
-            // BUG HERE: WHEN SOMEBODY SENDS A MESSAGE, THAT MESSAGE WILL APPEAR ON EVERY CHANNEL FIRST. 
-            $('#messageDisplay').append(content);
-        }; 
-        
-        
-        
-    })
+    function listenForMessages(channelName) {
+        channelName = (channelName === '' ? 'general' : channelName);
+        if (currentChannelListener !== '' ) {
+            socket.off('receive message '+currentChannelListener);
+        }
+        currentChannelListener = channelName;
+        socket.on('receive message '+channelName , data=>{
+            var newMessage = data.messages["msg"];
+            var username = data.username;
+            var msgTime = data.time
+            var content = document.createElement('div');
+            if (username===localStorage.getItem('username')) {
+                $(content).addClass('myMsgBox');
+                content.innerHTML = `
+                <p><strong style="margin-top:10px;margin-left:5.5%;color:black;">${username}</strong><span style="color:#fff;margin-left:3%;">${msgTime}</span></p>
+                <p class="myMsgText" style="margin-left:4%;" data-msg=${newMessage}>${newMessage}</p>
+                `
+                // BUG HERE: WHEN SOMEBODY SENDS A MESSAGE, THAT MESSAGE WILL APPEAR ON EVERY CHANNEL FIRST.
+                $('#messageDisplay').append(content);
+            } else {
+                $(content).addClass('msgBox');
+                content.innerHTML = `
+                <p><strong style="margin-top:10px;margin-left:20px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
+                <p class="msgText" style="margin-left:20px;" data-msg=${newMessage}>${newMessage}</p>
+                `
+                // BUG HERE: WHEN SOMEBODY SENDS A MESSAGE, THAT MESSAGE WILL APPEAR ON EVERY CHANNEL FIRST. 
+                $('#messageDisplay').append(content);
+            }; 
+        });
+    };
+   
 
     // send a message with enter key
     // DONE
