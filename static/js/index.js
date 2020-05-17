@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded',()=> { 
 
-   
+    
     currentChannelListener = '';
     
     // When pressed on "Enter" key, stop from from being submitted!
@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded',()=> {
         currentBtn.parent().css('color', 'white');
         socket.emit('retrieve messages', {"channel name":currentChannel});
         $(`button[data-channel="${currentChannel}"]`).trigger('click');
+        
     }
 
     // check if session does exist
@@ -145,8 +146,9 @@ document.addEventListener('DOMContentLoaded',()=> {
 
     // displaying the channel name on message part
     // DONE
-    socket.on('process display channel msg', data=>{
+    socket.on('process display channel msg', data=>{ 
         $(document).on('click','.channelBtn', (event)=> {
+
             $('#messageInput').val('');
             document.querySelector("#messageDisplay").scrollIntoView(false);
             var channelName = event.target.dataset.channel;
@@ -170,6 +172,7 @@ document.addEventListener('DOMContentLoaded',()=> {
     // displaying messages of a particular channel
     // DONE
     socket.on('display messages', data=>{
+
         messageArray = data.messages;
         channel = data.channel;
         listenForMessages(channel);
@@ -202,13 +205,14 @@ document.addEventListener('DOMContentLoaded',()=> {
             }
 
         }
+        scrollDown();
     })
 
     // sending messages
     // DONE
     $('#sendBtn').on('click', ()=>{
         var message = $('#messageInput').val();
-        var channel = $('#nameChannel').text();        //   FIX HERE
+        var channel = $('#nameChannel').text();    
         if (message.trim().length === 0) {
             return ;
         } else {
@@ -216,7 +220,9 @@ document.addEventListener('DOMContentLoaded',()=> {
             $('#messageInput').val("");
         }
     });
+    
     listenForMessages('');
+
     // display that new message
     function listenForMessages(channelName) {
         channelName = (channelName === '' ? 'general' : channelName);
@@ -235,20 +241,23 @@ document.addEventListener('DOMContentLoaded',()=> {
                 <p><strong style="margin-top:10px;margin-left:5.5%;color:black;">${username}</strong><span style="color:#fff;margin-left:3%;">${msgTime}</span></p>
                 <p class="myMsgText" style="margin-left:4%;" data-msg=${newMessage}>${newMessage}</p>
                 `
-                // BUG HERE: WHEN SOMEBODY SENDS A MESSAGE, THAT MESSAGE WILL APPEAR ON EVERY CHANNEL FIRST.
+              
                 $('#messageDisplay').append(content);
             } else {
                 $(content).addClass('msgBox');
                 content.innerHTML = `
-                <p><strong style="margin-top:10px;margin-left:20px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
-                <p class="msgText" style="margin-left:20px;" data-msg=${newMessage}>${newMessage}</p>
+                <p><strong style="margin-top:10px;margin-left:10px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
+                <p class="msgText" data-msg=${newMessage}>${newMessage}</p>
                 `
-                // BUG HERE: WHEN SOMEBODY SENDS A MESSAGE, THAT MESSAGE WILL APPEAR ON EVERY CHANNEL FIRST. 
+               
                 $('#messageDisplay').append(content);
-            }; 
+            }
+
+            scrollDown();
         });
     };
-   
+
+    
 
     // send a message with enter key
     // DONE
@@ -273,5 +282,8 @@ document.addEventListener('DOMContentLoaded',()=> {
 });
 
 
-
-// get the all messages, uptade last 100 of them to local storage, use localstorage in displaying messages
+// Scroll Down
+function scrollDown() {
+    var objMessageDisplay = document.getElementById('messageDisplay');
+    objMessageDisplay.scrollTop = objMessageDisplay.scrollHeight;
+}
