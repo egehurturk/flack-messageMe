@@ -16,16 +16,14 @@ Payload.max_decode_packets = 50
 
 channels = ["general", "random"]
 channelMessages = {
-    "general":[{"from":"bot1", "msg":"This is the very beginning", "time":"10 Apr 14.04 PM"}, {"from":"bot1", "msg":"Who knows, maybe one day I'll go popular", "time":"20 Apr 15.05 AM"}, {"from":"bot2", "msg":"Here comes the second", "time":"20 May 14.04 PM"}, {"from":"bot3", "msg":"Here's the third", "time":"22 May 14.04 PM"}, {"from":"bot4", "msg":"Watch me, I will expand cuz I want it that way, I will expand both vertically and horizontally", "time":"30 May 14.04 PM"}],
-    "random": [{"from":"bot5", "msg":"Let start #random", "time":"10 Jun 14.04 AM"}, {"from":"bot6", "msg":"Follow up: second", "time":"20 Jun 14.04 PM"}, {"from":"bot7", "msg":"Why not third", "time":"14 Jul 14.04 AM"}],
+    "general":[{"from":"BOT", "msg":"This is the very beginning", "time":""}, {"from":"BOT", "msg":"Who knows, maybe one day I'll go popular", "time":""}, {"from":"BOT", "msg":"Here comes the second", "time":""}, {"from":"BOT", "msg":"And the third", "time":""}, {"from":"BOT", "msg":"Watch me, I will expand cuz I want it that way, I will expand both vertically and horizontally", "time":""}],
+    "random": [{"from":"BOT", "msg":"Let start #random", "time":""}, {"from":"BOT", "msg":"Follow up: second", "time":""}, {"from":"BOT", "msg":"Why not third", "time":""}],
 }
-
 
 
 @app.route("/", methods=["POST", "GET"])
 def index():
     return render_template("index.html")
-
 
 
 
@@ -77,3 +75,6 @@ def sendMessage(data):
 @app.route("/more")
 def more():
     return render_template("more.html")
+
+if __name__ == "__main__":
+    app.run()
