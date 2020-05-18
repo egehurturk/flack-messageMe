@@ -14,9 +14,24 @@
     <script src="https://kit.fontawesome.com/fb6ab35cfd.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-    <!-- <script id="messageTemplate" type="text/x-handlebars-template">
-        <h6 class="usernameH">{{ username }}</h6>
-        <p class="msgText">${{ message }}</p>
+    <!-- <script>
+      var options = {
+        bottom: '64px', // default: '32px'
+        right: 'unset', // default: '32px'
+        left: '32px', // default: 'unset'
+        time: '0.5s', // default: '0.3s'
+        mixColor: '#fff', // default: '#fff'
+        backgroundColor: '#fff',  // default: '#fff'
+        buttonColorDark: '#100f2c',  // default: '#100f2c'
+        buttonColorLight: '#fff', // default: '#fff'
+        saveInCookies: false, // default: true,
+        label: '🌓', // default: ''
+        autoMatchOsTheme: true // default: true
+    }
+
+    const darkmode = new Darkmode(options);
+    darkmode.showWidget();
+
     </script> -->
 
     <title>{% block title %}{% endblock %}</title>
