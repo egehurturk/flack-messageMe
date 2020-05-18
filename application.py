@@ -20,7 +20,6 @@ channelMessages = {
     "random": [{"from":"BOT", "msg":"Let start #random", "time":""}, {"from":"BOT", "msg":"Follow up: second", "time":""}, {"from":"BOT", "msg":"Why not third", "time":""}],
 }
 
-
 @app.route("/", methods=["POST", "GET"])
 def index():
     return render_template("index.html")
@@ -71,10 +70,6 @@ def sendMessage(data):
     getMessages = channelMessages[channel]
     getMessages.append({"from":username, "msg":message, "time":msgTime})
     emit(f'receive message {channel}', {"messages":getMessages[-1], "channelName":channel, "username":getMessages[-1]["from"], "time":msgTime}, broadcast=True)
-
-@app.route("/more")
-def more():
-    return render_template("more.html")
 
 if __name__ == "__main__":
     app.run()
