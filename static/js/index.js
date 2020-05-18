@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded',()=> { 
+document.addEventListener('DOMContentLoaded',()=> {
+
 
     
     currentChannelListener = '';
@@ -36,6 +37,13 @@ document.addEventListener('DOMContentLoaded',()=> {
         $('#myModal').modal();                 
     }
     
+    if (localStorage.getItem('currentMode') === true) {
+        darkToggle(true);
+    } else {
+        lightToggle(false);
+    };
+
+
     // quick feedback
     // DONE
     $('#usernameInput').blur(function (e) {                     
@@ -241,7 +249,6 @@ document.addEventListener('DOMContentLoaded',()=> {
                 <p><strong style="margin-top:10px;margin-left:5.5%;color:black;">${username}</strong><span style="color:#fff;margin-left:3%;">${msgTime}</span></p>
                 <p class="myMsgText" style="margin-left:4%;" data-msg=${newMessage}>${newMessage}</p>
                 `
-              
                 $('#messageDisplay').append(content);
             } else {
                 $(content).addClass('msgBox');
@@ -249,7 +256,6 @@ document.addEventListener('DOMContentLoaded',()=> {
                 <p><strong style="margin-top:10px;margin-left:10px;color:black;">${username}</strong><span style="color:#777777;margin-left:5%;">${msgTime}</span></p>
                 <p class="msgText" data-msg=${newMessage}>${newMessage}</p>
                 `
-               
                 $('#messageDisplay').append(content);
             }
 
@@ -279,6 +285,26 @@ document.addEventListener('DOMContentLoaded',()=> {
         };
     });
 
+    const darkModeToggler = $('#checkboxToggler')
+    darkModeToggler.on('click', ()=> {
+
+        if (!localStorage.getItem('currentMode')) {
+            localStorage.setItem('currentMode', $(darkModeToggler).is(":checked"))
+        };
+        
+        if ($(darkModeToggler).is(":checked")) {
+            darkToggle(true);
+            localStorage.setItem('currentMode', true)
+        } else if ($(darkModeToggler).is(":not(:checked)")) {
+            lightToggle(false);
+            localStorage.setItem('currentMode', false)
+        }
+       
+        
+        
+         
+    });
+    
 });
 
 
@@ -287,3 +313,65 @@ function scrollDown() {
     var objMessageDisplay = document.getElementById('messageDisplay');
     objMessageDisplay.scrollTop = objMessageDisplay.scrollHeight;
 }
+
+
+
+// dark mode toggler
+function darkToggle(isTrue) {
+    if ($(darkModeToggler).is(":checked")===isTrue) {
+        const backgroundColor = $('body');
+        const col1 = $('.first-col');
+        const col2 = $('.second-col');
+        const col3 = $('.third-col')
+
+    }
+}
+
+const darkModeToggler = $('#checkboxToggler')
+// light mode toggler
+function lightToggle(isTrue) {
+    if ($(darkModeToggler).is(":checked") === isTrue) {
+
+        // variables
+        const backgroundColor = $('body');
+        const col1 = $('.first-col');
+        const col2 = $('.second-col');
+        const col3 = $('.third-col');
+        const channelRow = $('#channelRow');
+        const plusBtn = $('#plusBtn');
+        const channelName = $('#channelNameRow');
+        const nameChannel = $('#nameChannel');
+        const messageDisplay = $('#messageDisplay');
+        const sendMessageBackground = $('#sectionCol');
+        const inputMessage = $('.edit');
+        const inputGroupAppend = $('.input-group-append');
+        const sendIcon = $('.fa-paper-plane');
+        const channelButton = $('.channelBtn');
+        // const myMessageBox = $('.myMsgBox');
+        const myMessageText = $('.myMsgText');
+        
+        
+
+        // modifying the style
+        backgroundColor.css({'background-color': 'white'});
+        col1.css({'background-color':'#0c2e83', 'color': 'white', 'border':'none'});
+        col2.css({'background-color':'#1b4aa5', 'color': 'black', 'border':'none'});
+        col3.css({'background-color':'white', 'color': 'black', 'border':'none'});
+        channelRow.css({'background-color': '#1b4aa5', 'color':'black', 'border':'none'});
+        plusBtn.css({'background-color': '#1b4aa5', 'color':'black', 'border':'none'});
+        channelName.css({'background-color': '#7f9aa6', 'color':'black', 'border':'none'});
+        nameChannel.css('color', 'black');
+        messageDisplay.css({'background-color': '#f8f9fe', 'border': 'none'});
+        sendMessageBackground.css({'background-color': '#f1eeed', 'border': 'none'});
+        inputMessage.css({'background-color': 'white', 'color': 'black', 'border': '2px solid #e9e4e3'});
+        inputGroupAppend.css({'border': 'none'});
+        sendIcon.css('color', '#333');
+        channelButton.css({'background-color':'#1b4aa5'});
+        myMessageText.css('color', 'white');
+
+
+    };    
+}
+
+
+// TODO: Dark Mode.
