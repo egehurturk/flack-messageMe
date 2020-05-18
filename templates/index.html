@@ -32,11 +32,9 @@
               </div>
             
             <div class="wrapper">
-                <a href="{{ url_for('more') }}">
-                    <button class="btn custombtn">
+                    <button class="btn custombtn" type="button" data-toggle="modal" data-target="#darkModeModal">
                         <i class="fas fa-ellipsis-h text-white fa-lg"></i>
                     </button>
-                </a>
             </div>
         </div>  
         <div class="col-lg-2 second-col">
@@ -48,7 +46,7 @@
             </ul>
         </div>
         <div class="col-lg-9 third-col">
-            <div class="row" style="border: 2px solid #777777; border-left: none; border-right: none; border-top: none; height: 8.2%;">
+            <div class="row" style="border: 2px solid #777777; border-left: none; border-right: none; border-top: none; height: 8.2%;" id="channelNameRow">
                 <h2 id="nameChannel" class="ml-5 text-white mt-2"></h2>
             </div>
             <div class="row" style="height: 77%; background-color: #4d4b4b;" id="msgDisply">
@@ -61,7 +59,7 @@
                     <div class="input-group mb-3 mt-3 ml-5" style="width: 95%;">
                       <input type="text" class="form-control edit" placeholder="Type Something..." style="border-right: none;" id="messageInput">
                       <div class="input-group-append" style="background: none;">
-                        <button class=" input-group-text" type="submit" id="sendBtn" style="background: none;outline-color: transparent;outline-style: none;height: 55%;border: none"><i class="fas fa-paper-plane text-white mt-1"></i></button>
+                        <button class=" input-group-text" type="submit" id="sendBtn" style="background: none;outline-color: transparent;outline-style: none;height: 55%;border: none"><i class="fas fa-paper-plane mt-1"></i></button>
                       </div>
                     </div>
                 </div>
@@ -93,5 +91,38 @@
       </div>
     </div>
   </div>
+
+<!-- Modal -->
+<div class="modal fade" id="darkModeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Settings</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6">
+              <hr class="mt-2">
+              <h3 style="margin-top: 38px;">Dark mode: </h3>
+              <br>
+              <hr>
+          </div>
+          <div class="col-lg-6">
+              <label class="switch" id="switch">
+                  <input type="checkbox" checked id="checkboxToggler">
+                  <span class="slider round"></span>
+              </label>
+          </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
