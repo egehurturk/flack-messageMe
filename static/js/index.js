@@ -374,4 +374,5 @@ function lightToggle(isTrue) {
 }
 
 
-// TODO: Dark Mode.
+// TODO: Dark Mode. Set Dark Mode as Default. 
+// FIXME: setting LS (currentMode) will be the first when DOM Content Loads. By default, dark mode
