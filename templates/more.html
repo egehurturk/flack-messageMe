@@ -1,18 +1,33 @@
-{% extends 'base.html' %}
 
-{% block title %}MessageMe | More{% endblock %}
-
-{% block content %}
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
             <h1 class="mt-5 text-white">Settings</h1>
+            <hr>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
-            <h3 class="text-white mt-5">Dark mode</h3>
+        <div class="col-lg-6">
+            <hr class="mt-2">
+            <h3 class="text-white mt-5">Dark mode: </h3>
+            <hr>
         </div>
+        <div class="col-lg-6">
+            <label class="switch" id="switch">
+                <input type="checkbox" checked id="checkboxToggler" value="ARRAY">
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+    <div class="buttonWrP">
+        <button class="btn"
+        style="border-radius: 50px;background-color: #8EC5FC;
+        background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+        width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+        ">
+        <a href="{{ url_for('index') }}" class="text-white">Go back</a></button>
     </div>
 </div>
 
