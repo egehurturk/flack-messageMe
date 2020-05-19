@@ -72,4 +72,4 @@ def sendMessage(data):
     emit(f'receive message {channel}', {"messages":getMessages[-1], "channelName":channel, "username":getMessages[-1]["from"], "time":msgTime}, broadcast=True)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host= '0.0.0.0')
