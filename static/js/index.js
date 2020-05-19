@@ -36,12 +36,21 @@ document.addEventListener('DOMContentLoaded',()=> {
     } else {                              
         $('#myModal').modal();                 
     }
-    
-    if (localStorage.getItem('currentMode') === true) {
-        darkToggle(true);
-    } else {
-        lightToggle(false);
+
+    // remembering the mode
+    if (!localStorage.getItem('currentMode')) {
+        localStorage.setItem('currentMode', true)
+
     };
+    
+    if (localStorage.getItem('currentMode') === 'true') {
+        darkToggle();
+        $('#checkboxToggler').prop('checked', 'true');
+    } else {
+        lightToggle();
+    };
+
+
 
 
     // quick feedback
@@ -285,18 +294,16 @@ document.addEventListener('DOMContentLoaded',()=> {
         };
     });
 
-    const darkModeToggler = $('#checkboxToggler')
+    var darkModeToggler = $('#checkboxToggler')
     darkModeToggler.on('click', ()=> {
-
-        if (!localStorage.getItem('currentMode')) {
-            localStorage.setItem('currentMode', $(darkModeToggler).is(":checked"))
-        };
         
         if ($(darkModeToggler).is(":checked")) {
-            darkToggle(true);
+            darkToggle();
+            console.log('dark')
             localStorage.setItem('currentMode', true)
         } else if ($(darkModeToggler).is(":not(:checked)")) {
-            lightToggle(false);
+            lightToggle();
+            console.log('light')
             localStorage.setItem('currentMode', false)
         }
        
@@ -315,63 +322,90 @@ function scrollDown() {
 }
 
 
-
+var darkModeToggler = $('#checkboxToggler')
 // dark mode toggler
-function darkToggle(isTrue) {
-    if ($(darkModeToggler).is(":checked")===isTrue) {
-        const backgroundColor = $('body');
-        const col1 = $('.first-col');
-        const col2 = $('.second-col');
-        const col3 = $('.third-col')
+function darkToggle() {
+
+
+    // variables
+    const backgroundColor = $('body');
+    const col1 = $('.first-col');
+    const col2 = $('.second-col');
+    const col3 = $('.third-col');
+    const channelRow = $('#channelRow');
+    const plusBtn = $('#plusBtn');
+    const channelName = $('#channelNameRow');
+    const nameChannel = $('#nameChannel');
+    const messageDisplay = $('#messageDisplay');
+    const sendMessageBackground = $('#sectionCol');
+    const inputMessage = $('.edit');
+    const inputGroupAppend = $('.input-group-append');
+    const sendIcon = $('.fa-paper-plane');
+    const channelButton = $('.channelBtn');
+    // const myMessageBox = $('.myMsgBox');
+
+
+;
+    backgroundColor.css({'background': '#333333;'});
+    col1.css({'background-color':'#292828', 'border':'2px solid #777777;'});
+    col2.css({'background-color':'#292828', 'border':'2px solid #555555;'});
+    col3.css({'background-color':'#333333', 'border':'2px solid #777777;'});
+    channelRow.css({'color':'black', 'border':'2px solid #555555;', 'background-color': 'transparent'});
+    plusBtn.css({'background-color': '#292828', 'border':'none'});
+    channelName.css({'color':'black', 'background-color': ''});
+    nameChannel.css('color', 'black');
+    messageDisplay.css({'background-color': '#353637'});
+    inputMessage.css({'background-color': '#333333', 'color': 'white', 'border': '2px solid #999999'});
+    inputGroupAppend.css({'border': '2px solid #999999;', 'box-shadow': '0px 10px 30px 0px rgba(0, 0, 0, 0.25);', 'border-left': 'none;'});
+    sendIcon.css('color', 'white');
+    channelButton.css({'background-color':'transparent'});
+    sendMessageBackground.css({'background-color': '#333333',});
 
     }
-}
 
-const darkModeToggler = $('#checkboxToggler')
+
+
 // light mode toggler
-function lightToggle(isTrue) {
-    if ($(darkModeToggler).is(":checked") === isTrue) {
+function lightToggle() {
 
-        // variables
-        const backgroundColor = $('body');
-        const col1 = $('.first-col');
-        const col2 = $('.second-col');
-        const col3 = $('.third-col');
-        const channelRow = $('#channelRow');
-        const plusBtn = $('#plusBtn');
-        const channelName = $('#channelNameRow');
-        const nameChannel = $('#nameChannel');
-        const messageDisplay = $('#messageDisplay');
-        const sendMessageBackground = $('#sectionCol');
-        const inputMessage = $('.edit');
-        const inputGroupAppend = $('.input-group-append');
-        const sendIcon = $('.fa-paper-plane');
-        const channelButton = $('.channelBtn');
-        // const myMessageBox = $('.myMsgBox');
-        const myMessageText = $('.myMsgText');
-        
-        
 
-        // modifying the style
-        backgroundColor.css({'background-color': 'white'});
-        col1.css({'background-color':'#0c2e83', 'color': 'white', 'border':'none'});
-        col2.css({'background-color':'#1b4aa5', 'color': 'black', 'border':'none'});
-        col3.css({'background-color':'white', 'color': 'black', 'border':'none'});
-        channelRow.css({'background-color': '#1b4aa5', 'color':'black', 'border':'none'});
-        plusBtn.css({'background-color': '#1b4aa5', 'color':'black', 'border':'none'});
-        channelName.css({'background-color': '#7f9aa6', 'color':'black', 'border':'none'});
-        nameChannel.css('color', 'black');
-        messageDisplay.css({'background-color': '#f8f9fe', 'border': 'none'});
-        sendMessageBackground.css({'background-color': '#f1eeed', 'border': 'none'});
-        inputMessage.css({'background-color': 'white', 'color': 'black', 'border': '2px solid #e9e4e3'});
-        inputGroupAppend.css({'border': 'none'});
-        sendIcon.css('color', '#333');
-        channelButton.css({'background-color':'#1b4aa5'});
-        myMessageText.css('color', 'white');
+    // variables
+    const backgroundColor = $('body');
+    const col1 = $('.first-col');
+    const col2 = $('.second-col');
+    const col3 = $('.third-col');
+    const channelRow = $('#channelRow');
+    const plusBtn = $('#plusBtn');
+    const channelName = $('#channelNameRow');
+    const nameChannel = $('#nameChannel');
+    const messageDisplay = $('#messageDisplay');
+    const sendMessageBackground = $('#sectionCol');
+    const inputMessage = $('.edit');
+    const inputGroupAppend = $('.input-group-append');
+    const sendIcon = $('.fa-paper-plane');
+    const channelButton = $('.channelBtn');
+    // const myMessageBox = $('.myMsgBox');
+    
+    
 
+    // modifying the style
+    backgroundColor.css({'background-color': '#fff'});
+    col1.css({'background-color':'#0c2e83', 'color': 'white', 'border':'2px solid #02CE83;'});
+    col2.css({'background-color':'#1b4aa5', 'color': 'black', 'border':''});
+    col3.css({'background-color':'white', 'color': 'black'});
+    channelRow.css({'background-color': '#1b4aa5', 'color':'black'});
+    plusBtn.css({'background-color': '#1b4aa5', 'color':'black'});
+    channelName.css({'background-color': '#7f9aa6', 'color':'black'});
+    nameChannel.css('color', 'black');
+    messageDisplay.css({'background-color': '#f8f9fe'});
+    sendMessageBackground.css({'background-color': '#f1eeed'});
+    inputMessage.css({'background-color': 'white', 'color': 'black', 'border': '2px solid #e9e4e3'});
+    inputGroupAppend.css({'border': '0px solid transparent', 'color': '#fff'});
+    sendIcon.css('color', '#333');
+    channelButton.css({'background-color':'#1b4aa5'});
 
     };    
-}
+
 
 
 // TODO: Dark Mode. Set Dark Mode as Default. 
