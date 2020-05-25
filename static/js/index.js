@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded',()=> {
     
     // When pressed on "Enter" key, stop from from being submitted!
     $(document).on("keydown", "form", function (event) {
-        return event.key != "Enter";
+        return event.key !== "Enter";
     })
     
     // initialize socketio connection
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded',()=> {
                 if (userNaming===localStorage.getItem('username')) {
                     $(content).addClass('myMsgBox');
                     content.innerHTML = `
-                    <p><strong style="margin-top:10px;margin-left:5.5%;color:black;">${userNaming}</strong><span style="color:#fff;margin-left:3%;">${time}</span></p>
+                    <p><strong style="margin-top:10px;margin-left:5.5%;color:#000000;">${userNaming}</strong><span style="color:#fff;margin-left:3%;">${time}</span></p>
                     <p class="myMsgText" style="margin-left:4%;" data-msg=${message}>${message}</p>
                     `
                     $('#messageDisplay').append(content);
